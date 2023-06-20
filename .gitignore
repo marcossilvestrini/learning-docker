@@ -1,0 +1,57 @@
+#ignore files general
+**/*.log
+**/*.vagrant
+*workspace.code-workspace
+**/*.vdi
+
+#security
+**/authorized_keys
+**/*.pub
+**/*.ppk
+**/*private*
+**/.ssh/id_*
+**/.ssh/*_id_*
+**/.ssh/known_hosts
+!Klpic2.com.br.+013+29838.private
+security/*
+!security/README.md
+
+#Apps
+*.exe
+
+#Slack
+Slack/silvestrini.py
+*__pycache__*
+
+
+### Terraform ###
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# example: *tfplan*
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Locks
+.terraform.lock*
