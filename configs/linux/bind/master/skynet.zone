@@ -1,0 +1,27 @@
+$TTL 1h
+
+@                   IN      SOA     ol9-server01.skynet.com.br.   vagrant.skynet.com.br. (
+                            01                      ; serial
+                            28800                   ; refresh (8h)
+                            7200                    ; retry (2h)
+                            604800                  ; expire (7d)
+                            3600                    ; negative caching (1h)
+)
+
+
+@                   IN      NS      ol9-server01.skynet.com.br.                                                           
+                            MX      5       mail                            
+
+ol9-server01                A       192.168.0.130   ;glue record,dns master
+debian-server01             A       192.168.0.140   ;server
+debian-server02             A       192.168.0.141   ;server
+debian-server03             A       192.168.0.142   ;server
+debian-client01             A       192.168.0.150   ;client server
+win-silvestrini             A       192.168.0.100   ;my desktop
+win-silvestrini2             A      192.168.0.101   ;my notebook
+mail                        A       192.168.0.130   ;mail
+ftp                         CNAME   ol9-server01    ;ftp
+www                         CNAME   ol9-server02    ;http
+@                      IN   TXT     "skynet - The Company for crazy people!!!"
+
+skynet.com.br. IN DNSKEY 256 3 13 qzYHNPMPd6QjO66oHI4RL95LBSb3wRuEGJSXgByHJalof0DBJOucDKE1 MMudvv7eNoOabO+m91rQKUbRw6n/Vg==

@@ -1,0 +1,255 @@
+#
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2020 Oracle and/or its affiliates. All rights reserved.
+#
+# Since: January, 2020
+# Author: gerald.venzl@oracle.com
+# Description: Creates an Oracle Linux virtual machine.
+#
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+#
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# EXPERIMENTAL FEATURES
+VAGRANT_EXPERIMENTAL="disks"
+
+# INSTALL PLUGIN RELLOAD
+unless Vagrant.has_plugin?("vagrant-reload")
+  puts 'Installing vagrant-reload Plugin...'
+  system('vagrant plugin install vagrant-reload')
+end
+
+# INSTALL PLUGIN VBguest
+unless Vagrant.has_plugin?("vagrant-vbguest")
+  puts 'Installing vagrant-vbguest Plugin...'
+  system('vagrant plugin install vagrant-vbguest')
+end
+
+# GLOBAL BOX CONFIGURATIONS
+BOX_OL_URL = "https://oracle.github.io/vagrant-projects/boxes"
+BOX_OL_NAME = "oraclelinux/9"
+BOX_DEBIAN_NAME = "debian/bookworm64"
+DEBIAN_DISK_SIZE = 100
+
+#DEFINE VM
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # GLOBAL VMGUEST CONFIGURATIONS
+  config.vbguest.no_install  = true
+  config.vbguest.auto_update = false
+  config.vbguest.no_remote   = true
+  config.vm.box_download_insecure=true
+
+  # VM ol9_server01 - DNS Bind, Postfix,Samba, NFS, Pure-FTP
+  config.vm.define "ol9-server01"  do |ol9_server01|
+    ol9_server01.vm.box = BOX_OL_NAME
+    ol9_server01.vm.box_url = "#{BOX_OL_URL}/#{BOX_OL_NAME}.json"
+
+    # VARIABLE HOSTNAME
+    VM_OL9_SERVER01= "ol9-server01"
+
+    # HOSTNAM
+    ol9_server01.vm.hostname =VM_OL9_SERVER01
+
+    # NETWORK
+    ol9_server01.vm.network "public_network", nic_type: "virtio", mac: "080027f3066a", ip: "192.168.0.130", netmask: "255.255.255.0", mode: "bridge",bridge: [
+      "Intel(R) I211 Gigabit Network Connection",
+      "MediaTek Wi-Fi 6 MT7921 Wireless LAN"
+    ]    
+    #ol9_server01.vm.network "private_network", nic_type: "virtio", mac: "080027f3066b", ip: "172.36.12.230", netmask: "255.255.255.0"
+
+    # MOUNTS
+    ol9_server01.vm.synced_folder ".", "/vagrant", disabled: true
+    ol9_server01.vm.synced_folder "../../security/", "/home/vagrant/security"
+    ol9_server01.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
+    ol9_server01.vm.synced_folder "../../scripts/linux/", "/home/vagrant/scripts"
+
+    # PROVIDER
+    ol9_server01.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name =VM_OL9_SERVER01
+      vb.memory = 4092
+      vb.cpus = 2
+    end
+
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    ol9_server01.vm.provision "shell", path: "../../scripts/linux/commons/userdata-ol9.sh"
+
+    # SET DNS BIND
+    ol9_server01.vm.provision "shell", path: "../../scripts/linux/bind/userdata-bind-master.sh"
+
+    # SET ISC DHCP
+    ol9_server01.vm.provision "shell", path: "../../scripts/linux/dhcp/userdata-dhcp.sh"
+
+    # CONFIGURE PURE-FTP
+    ol9_server01.vm.provision "shell", path: "../../scripts/linux/pure-ftp/userdata-pureftp.sh"
+
+  end
+
+  # VM debian_server01 - Docker Node 1
+  config.vm.define "debian-server01"  do |debian_server01|
+    debian_server01.vm.box = BOX_DEBIAN_NAME
+
+    # REZISE PRIMARY DISK
+    debian_server01.vm.disk :disk, size: DEBIAN_DISK_SIZE, primary: true
+
+
+    # VARIABLE HOSTNAME
+      VM_DEBIAN_SERVER01= "debian-server01"
+
+    # HOSTNAME
+    debian_server01.vm.hostname =  VM_DEBIAN_SERVER01
+
+    # NETWORK
+    debian_server01.vm.network "public_network", mac: "080027f3067a", ip: "192.168.0.140", netmask: "255.255.255.0", mode: "bridge",bridge:[
+      "Intel(R) I211 Gigabit Network Connection",
+      "MediaTek Wi-Fi 6 MT7921 Wireless LAN"
+    ]
+    #debian_server01.vm.network "private_network", mac: "080027f3067b", ip: "172.36.12.240", netmask: "255.255.255.0"
+
+    # MOUNTS
+    debian_server01.vm.synced_folder ".", "/vagrant", disabled: true
+    debian_server01.vm.synced_folder "../../security/", "/home/vagrant/security"
+    debian_server01.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
+    debian_server01.vm.synced_folder "../../scripts/linux/", "/home/vagrant/scripts"
+
+    #PROVIDER
+    debian_server01.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name =  VM_DEBIAN_SERVER01
+      vb.memory = 8192
+      vb.cpus = 3
+    end
+
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    debian_server01.vm.provision "shell", path: "../../scripts/linux/commons/userdata-debian.sh"
+
+    # INSTALL DOCKER
+    debian_server01.vm.provision "shell", path: "../../scripts/linux/docker/userdata-docker.sh"
+    
+  end  
+
+  # VM debian_server02 - Docker Node 2
+  config.vm.define "debian-server02"  do |debian_server02|
+    debian_server02.vm.box = BOX_DEBIAN_NAME
+
+    # VARIABLE HOSTNAME
+      VM_DEBIAN_SERVER02= "debian-server02"
+
+    # HOSTNAME
+    debian_server02.vm.hostname =  VM_DEBIAN_SERVER02
+
+    # NETWORK
+    debian_server02.vm.network "public_network", mac: "080027f3068a", ip: "192.168.0.141", netmask: "255.255.255.0", mode: "bridge",bridge:[
+      "Intel(R) I211 Gigabit Network Connection",
+      "MediaTek Wi-Fi 6 MT7921 Wireless LAN"
+    ]
+    #debian_server02.vm.network "private_network", mac: "080027f3068b", ip: "172.36.12.241", netmask: "255.255.255.0"
+
+    # MOUNTS
+    debian_server02.vm.synced_folder ".", "/vagrant", disabled: true
+    debian_server02.vm.synced_folder "../../security/", "/home/vagrant/security"
+    debian_server02.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
+    debian_server02.vm.synced_folder "../../scripts/linux/", "/home/vagrant/scripts"
+
+    #PROVIDER
+    debian_server02.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name =  VM_DEBIAN_SERVER02
+      vb.memory = 8192
+      vb.cpus = 3
+    end
+
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    debian_server02.vm.provision "shell", path: "../../scripts/linux/commons/userdata-debian.sh"
+
+    # INSTALL DOCKER
+    debian_server02.vm.provision "shell", path: "../../scripts/linux/docker/userdata-docker.sh"
+    
+  end  
+
+  # VM debian_server03 - Docker Node 3
+  config.vm.define "debian-server03"  do |debian_server03|
+    debian_server03.vm.box = BOX_DEBIAN_NAME
+
+    # VARIABLE HOSTNAME
+      VM_DEBIAN_SERVER03= "debian-server03"
+
+    # HOSTNAME
+    debian_server03.vm.hostname = VM_DEBIAN_SERVER03
+
+    # NETWORK
+    debian_server03.vm.network "public_network", mac: "080027f3069a", ip: "192.168.0.142", netmask: "255.255.255.0", mode: "bridge",bridge:[
+      "Intel(R) I211 Gigabit Network Connection",
+      "MediaTek Wi-Fi 6 MT7921 Wireless LAN"
+    ]
+    #debian_server03.vm.network "private_network", mac: "080027f3069b", ip: "172.36.12.242", netmask: "255.255.255.0"
+
+    # MOUNTS
+    debian_server03.vm.synced_folder ".", "/vagrant", disabled: true
+    debian_server03.vm.synced_folder "../../security/", "/home/vagrant/security"
+    debian_server03.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
+    debian_server03.vm.synced_folder "../../scripts/linux/", "/home/vagrant/scripts"
+
+    #PROVIDER
+    debian_server03.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name =  VM_DEBIAN_SERVER03
+      vb.memory = 8192
+      vb.cpus = 3
+    end
+
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    debian_server03.vm.provision "shell", path: "../../scripts/linux/commons/userdata-debian.sh"
+
+    # INSTALL DOCKER
+    debian_server03.vm.provision "shell", path: "../../scripts/linux/docker/userdata-docker.sh"
+    
+  end  
+
+  # VM debian_client - Some serviec utils, thunderbird,jxplorer,google-chrome, firefox
+  config.vm.define "debian-client01"  do |debian_client01|
+    debian_client01.vm.box = BOX_DEBIAN_NAME
+
+    # VARIABLE HOSTNAME
+    VM_DEBIAN_CLIENT01= "debian-client01"
+
+    # HOSTNAME
+    debian_client01.vm.hostname =VM_DEBIAN_CLIENT01
+
+    # NETWORK
+    debian_client01.vm.network "public_network", mac: "080027f3096a" ,ip: "192.168.0.150",mode: "bridge",bridge: [
+      "Intel(R) I211 Gigabit Network Connection",
+      "MediaTek Wi-Fi 6 MT7921 Wireless LAN"
+    ]
+    #debian_client01.vm.network "private_network",type: "dhcp",ip: "172.36.12.1",mac: "080027f3096b"
+
+    # MOUNTS
+    debian_client01.vm.synced_folder ".", "/vagrant", disabled: true
+    debian_client01.vm.synced_folder "../../security/", "/home/vagrant/security"
+    debian_client01.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
+    debian_client01.vm.synced_folder "../../scripts/", "/home/vagrant/scripts"    
+    debian_client01.vm.synced_folder "../../test/linux/", "/home/vagrant/test"
+
+    #PROVIDER
+    debian_client01.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name =VM_DEBIAN_CLIENT01
+      vb.memory = 8192
+      vb.cpus = 3
+    end
+
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    debian_client01.vm.provision "shell", path: "../../scripts/linux/commons/userdata-debian.sh"
+
+    # INSTALL DOCKER
+    debian_client01.vm.provision "shell", path: "../../scripts/linux/docker/userdata-docker.sh"
+
+  end
+
+end
