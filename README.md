@@ -2,6 +2,7 @@
 
 [![PSScriptAnalyzer](https://github.com/marcossilvestrini/learning-docker/actions/workflows/powershell.yml/badge.svg)](https://github.com/marcossilvestrini/learning-docker/actions/workflows/powershell.yml)
 [![Release](https://github.com/marcossilvestrini/learning-docker/actions/workflows/release.yml/badge.svg)](https://github.com/marcossilvestrini/learning-docker/actions/workflows/release.yml)
+[![Check Docker App](https://github.com/marcossilvestrini/learning-docker/actions/workflows/check-docker-app.yml/badge.svg)](https://github.com/marcossilvestrini/learning-docker/actions/workflows/check-docker-app.yml)
 
 [![MIT License][license-shield]][license-url]
 [![Forks][forks-shield]][forks-url]
