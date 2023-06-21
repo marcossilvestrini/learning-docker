@@ -209,7 +209,7 @@ docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_
 docker run -d -v <volume_name>:/app <image_name_or_id>
 ```
 
-<p align="right">(<a href="#docker-images">back to docker containers</a>)</p>
+<p align="right">(<a href="#docker-images">back to docker images</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

@@ -19,26 +19,27 @@ usermod --password $(echo vagrant | openssl passwd -1 -stdin) root
 # Install packages
 apt-get update -y
 apt-get upgrade -y
-apt-get install -y sshpass
-apt-get install -y vim
-apt-get install -y dos2unix
-apt-get install -y tree
-apt-get install -y curl
-apt-get install -y psmisc
-apt-get install -y xserver-xorg
-apt-get install -y python3-pip
-apt-get install -y python3-venv
-apt-get install -y net-tools
-apt-get install -y network-manager
-apt-get install -y dnsutils
-apt-get install -y tcpdump
-apt-get install -y sysstat
-apt-get install -y htop
-apt-get install -y collectd
-apt-get install -y samba smbclient
-apt-get install -y cifs-utils
-apt-get install -y nmap
-
+apt-get install -y \
+jq \
+sshpass \
+vim \
+dos2unix \
+tree \
+curl \
+psmisc \
+xserver-xorg \
+python3-pip \
+python3-venv \
+net-tools \
+network-manager \
+dnsutils \
+tcpdump \
+sysstat \
+htop \
+collectd \
+samba smbclient \
+cifs-utils \
+nmap
 
 # Set profile in /etc/profile
 cp -f configs/commons/profile-debian /etc/profile

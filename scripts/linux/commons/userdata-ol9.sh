@@ -21,18 +21,19 @@ dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.r
 
 # Install packages
 dnf update -y
-dnf install -y bash-completion
-dnf install -y vim
-dnf install -y dos2unix
-dnf install -y sshpass
-dnf install -y htop
-dnf install -y lsof
-dnf install -y tree
-dnf install -y net-tools
-dnf install -y bind-utils
-dnf install -y telnet
-dnf install -y traceroute
-dnf install -y sysstat
+dnf install -y \
+bash-completion \
+vim \
+dos2unix \
+sshpass \
+htop \
+lsof \
+tree \
+net-tools \
+bind-utils \
+telnet \
+traceroute \
+sysstat
 
 # Set profile in /etc/profile
 cp -f configs/commons/profile-ol9 /etc/profile
@@ -75,7 +76,7 @@ setenforce Permissive
 dnf config-manager --set-enabled ol9_codeready_builder
 dnf update -y
 dnf install -y xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
-    xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64
+xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64
 
 # Enable sadc collected system activity
 cp -f configs/commons/sysstat /etc/default/

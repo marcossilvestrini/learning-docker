@@ -16,14 +16,6 @@ cd $WORKDIR || exit
 
 # Variables
 DISTRO=$(cat /etc/*release | grep -ws NAME=)
-DOCKER_APP_NAME="app-http"
-DOCKER_APP_DIR="/usr/share/nginx/html"
-DOCKER_VOLUME="/docker-volumes/$DOCKER_APP_NAME"
-TAG="v1.0.0"
-# {{username}}/{{imagename}}:{{version\tag}}
-DOCKER_IMAGE="mrsilvestrini/$DOCKER_APP_NAME:$TAG" 
-DOCKERFILE="configs/docker/images/$DOCKER_APP_NAME"
-
 
 # Check if distribution is Debian
 if [[ "$DISTRO" == *"Debian"* ]]; then    
@@ -33,6 +25,9 @@ else
 fi
 
 # Install docker
+
+# Uninstall old versions
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do apt-get remove $pkg; done
 
 # Add Docker’s official GPG key:
 install -m 0755 -d /etc/apt/keyrings
@@ -49,6 +44,9 @@ tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ## Update the apt package index:
 apt-get update -y >/dev/null
+
+## Install pre reqs
+apt-get install ca-certificates curl gnupg
 
 ## Install Docker Engine, containerd, and Docker Compose.
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y >/dev/null

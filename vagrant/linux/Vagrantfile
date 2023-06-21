@@ -33,8 +33,8 @@ end
 # GLOBAL BOX CONFIGURATIONS
 BOX_OL_URL = "https://oracle.github.io/vagrant-projects/boxes"
 BOX_OL_NAME = "oraclelinux/9"
-BOX_DEBIAN_NAME = "debian/bookworm64"
-DEBIAN_DISK_SIZE = 100
+BOX_DEBIAN_NAME = "debian/bullseye64"
+DEBIAN_DISK_SIZE = "100GB"
 
 #DEFINE VM
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vbguest.no_install  = true
   config.vbguest.auto_update = false
   config.vbguest.no_remote   = true
-  config.vm.box_download_insecure=true
+  config.vm.box_download_insecure=true  
 
   # VM ol9_server01 - DNS Bind, Postfix,Samba, NFS, Pure-FTP
   config.vm.define "ol9-server01"  do |ol9_server01|
@@ -138,6 +138,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "debian-server02"  do |debian_server02|
     debian_server02.vm.box = BOX_DEBIAN_NAME
 
+    # REZISE PRIMARY DISK
+    debian_server02.vm.disk :disk, size: DEBIAN_DISK_SIZE, primary: true
+
     # VARIABLE HOSTNAME
       VM_DEBIAN_SERVER02= "debian-server02"
 
@@ -176,6 +179,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # VM debian_server03 - Docker Node 3
   config.vm.define "debian-server03"  do |debian_server03|
     debian_server03.vm.box = BOX_DEBIAN_NAME
+
+    # REZISE PRIMARY DISK
+    debian_server03.vm.disk :disk, size: DEBIAN_DISK_SIZE, primary: true
 
     # VARIABLE HOSTNAME
       VM_DEBIAN_SERVER03= "debian-server03"
@@ -233,7 +239,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     debian_client01.vm.synced_folder ".", "/vagrant", disabled: true
     debian_client01.vm.synced_folder "../../security/", "/home/vagrant/security"
     debian_client01.vm.synced_folder "../../configs/linux/", "/home/vagrant/configs"
-    debian_client01.vm.synced_folder "../../scripts/", "/home/vagrant/scripts"    
+    debian_client01.vm.synced_folder "../../scripts/linux", "/home/vagrant/scripts"    
     debian_client01.vm.synced_folder "../../test/linux/", "/home/vagrant/test"
 
     #PROVIDER
@@ -249,6 +255,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # INSTALL DOCKER
     debian_client01.vm.provision "shell", path: "../../scripts/linux/docker/userdata-docker.sh"
+
+    # CREATE DOCKER IMAGE FOR TESTING
+    debian_client01.vm.provision "shell", path: "../../scripts/linux/docker/create-docker-image.sh"
+
+    # CHECK DOCKER IMAGE
+    debian_client01.vm.provision "shell", path: "../../scripts/linux/docker/check-docker-image.sh"
 
   end
 

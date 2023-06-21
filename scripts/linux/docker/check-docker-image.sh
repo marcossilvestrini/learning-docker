@@ -17,7 +17,6 @@ DOCKER_APP_NAME="app-http"
 DOCKER_IMAGE="silvestrini/$DOCKER_APP_NAME"
 URL_DOCKER_APP="http://debian-client01:8080"
 
-
 # File for outputs testing
 FILE_TEST=test/docker/check-docker-app.txt
 LINE="------------------------------------------------------"
