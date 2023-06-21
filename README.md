@@ -42,6 +42,9 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#docker-containers">Docker Containers</a></li>
+    <li><a href="#docker-images">Docker Images</a></li>
+    <li><a href="#docker-volumes">Docker Images</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -96,17 +99,131 @@ Use this repository for get learning about Docker exam
 
 ## Roadmap
 
-* [ ] Create repository
+* [x] Create repository
 * [ ] Create github action for automation tasks
-* [ ] Create examples about docker
+* [x] Create examples about docker containers
+* [x] Create examples about docker images
 
+<p align="right">(<a href="#roadmap">back to roadmap</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## About Docker
+>Docker Engine work with namespaces(PID,NET,IPC,MNT,UTS) and cgroups.
 
-<a name="about-docker"></a>
+```sh
+# Get a version of docker
+docker --version
+```
 
-<p align="right">(<a href="#about-docker">back to about docker</a>)</p>
+## Docker Containers
+
+<a name="docker-containers"></a>
+
+```sh
+# list containers
+docker container ls
+docker ps
+
+# list containers id
+docker container ls -aq
+docker ps -aq
+
+# list containers virtual size
+docker container ls -s
+
+# run container
+docker run hello-world
+
+# execute command in container
+docker exec -it <container_id_or_name> <command>
+
+# run container iterative
+docker run -it <image_name> bash
+
+# stop pause containers
+docker stop <container_id_or_name>
+docker stop -t=0 <container_id_or_name>
+
+# Stop all containers
+docker stop $(docker container ls -q)
+
+# Pause\Unpause containers
+docker pause <container_id_or_name>
+docker unpause <container_id_or_name>
+
+# delete container
+docker rm <container_id_or_name> --force
+
+# delete all containers
+docker container rm $(docker container ls -aq) --force
+
+# forwarding port
+docker run -d -P <container_id_or_name>
+docker run -d -p 8080:80 <container_id_or_name>
+
+# show map ports
+docker port <container_id_or_name>
+```
+
+<p align="right">(<a href="#docker-containers">back to docker containers</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Docker Images
+
+<a name="docker-images"></a>
+
+```sh
+# pull image
+docker pull <image_name>
+
+# show local images images
+docker images
+
+# show details of images
+docker inspect <image_id>
+
+# show  details of images layers
+docker history <image_id>
+
+# remove docker images
+docker rmi <image_id> --force
+
+# remove all docker images
+docker rmi $(docker images -aq) --force
+
+# build a docker image
+
+## first, create your dockerfile with your app
+
+## then create a docker image.
+cd <path_of_your_dockerfile>
+docker build -t <dockerhub_username/image_name:tag>
+
+# publish your image in docker hub
+docker push <dockerhub_username/image_name:tag>
+
+# create container with docker bind mounts
+docker run -it -d -v <dir_local_for_data:dir_container_for_data <image_name_or_id>
+docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
+
+# create container with docker volume
+docker run -d -v <volume_name>:/app <image_name_or_id>
+```
+
+<p align="right">(<a href="#docker-images">back to docker containers</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## Docker Volumes
+
+```sh
+# create docker volume
+docker volume create <volume_name>
+
+# delete docker volume
+docker volume rm <volume_name>
+```
+
+<p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
