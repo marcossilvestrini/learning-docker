@@ -230,6 +230,12 @@ docker run -d -v <volume_name>:/app <image_name_or_id>
 <a name="docker-volumes"></a>
 
 ```sh
+# list docker volumes
+docker volume ls
+
+# inspect docker volumes
+docker volume inspect <volume_name>
+
 # create docker volume
 docker volume create <volume_name>
 
@@ -248,8 +254,14 @@ docker volume rm <volume_name>
 # list networks
 docker network list
 
-# create docker network
-docker network create --drive bridge skynet
+# inspect docker network
+docker network inspect <network_name>
+
+# create docker network bridge
+docker network create --drive bridge <network_name>
+
+# delete docker network
+docker network rm <network_name>
 ```
 
 <p align="right">(<a href="#docker-network">back to docker network</a>)</p>
@@ -260,7 +272,14 @@ docker network create --drive bridge skynet
 <a name="docker-compose"></a>
 
 ```sh
+# list containers|services
+docker-compose ps
+docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml  ps
 
+# create containers|services
+docker-compose up
+docker-compose up -d
+docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
 ```
 
 <p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>

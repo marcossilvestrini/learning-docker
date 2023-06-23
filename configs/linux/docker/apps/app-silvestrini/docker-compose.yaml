@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   app-silvestrini:
-    image: mrsilvestrini/app-http:v1.0.0
+    image: mrsilvestrini/app-silvestrini:v1.0.0
     container_name: app-silvestrini
     volumes:      
         - volume-app-silvestrini:/usr/share/nginx/html
