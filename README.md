@@ -101,7 +101,7 @@ Use this repository for get learning about Docker exam
 ## Roadmap
 
 * [x] Create repository
-* [ ] Create github action for automation tasks
+* [x] Create github action for automation tasks
 * [x] Create examples about docker containers
 * [x] Create examples about docker images
 
@@ -131,6 +131,9 @@ docker ps -aq
 # list containers virtual size
 docker container ls -s
 
+# create containers
+docker container create -it ubuntu
+
 # run container
 docker run hello-world
 
@@ -140,7 +143,10 @@ docker run -it <image_name> bash
 # execute command in container
 docker exec -it <container_id_or_name> <command>
 
-# create container with name
+# connect to docker container
+docker container attach <CONTAINER ID>
+
+# run container with name
 docker run -it --name ubuntu01 ubuntu bash
 
 # create container with specified network
@@ -148,6 +154,9 @@ docker run -it --name ubuntu01 --network skynet ubuntu bash
 
 # create container with network host
 docker run -it --name ubuntu01 --network host ubuntu bash
+
+# start containers
+docker container start ubuntu
 
 # stop pause containers
 docker stop <container_id_or_name>
@@ -175,6 +184,32 @@ docker port <container_id_or_name>
 
 # inspect container
 docker inspect <container_id_or_name>
+
+# show container resources usage information
+docker container stat
+docker container stats <container_id_or_name>
+
+# show process in execution in container
+docker container top <container_id_or_name>
+
+# show container logs
+docker container logs <container_id_or_name>
+docker container logs -f <container_id_or_name>
+
+# set limit of memory for container
+docker container run -it -m 512M --name testmemory debian
+docker container run -it --name testmemory2 --memory 1G debian
+
+# set limit of cpu for container
+docker container run -it --cpus=0.5 --name testcpu nginx
+
+# update ram|cpu resource in container
+docker container update -m 2048 testmemory
+docker container update --cpus=3 testcpu
+
+# get infos memory and cpu
+docker inspect <container_id_or_name> | grep -i cpu
+docker inspect <container_id_or_name> | grep -i mem
 ```
 
 <p align="right">(<a href="#docker-containers">back to docker containers</a>)</p>
@@ -202,24 +237,29 @@ docker rmi <image_id> --force
 
 # remove all docker images
 docker rmi $(docker images -aq) --force
+```
 
-# build a docker image
+## Docker Build
 
-## first, create your dockerfile with your app
+Build a docker image
 
-## then create a docker image.
+```sh
+# first, create your Dockerfile with your app
+```
+
+```dockerfile
+# Example Dockerfile
+FROM debian
+RUN /bin/echo "HELLO DOCKER"
+```
+
+```sh
+# then create a docker image.
 cd <path_of_your_dockerfile>
 docker build -t <dockerhub_username/image_name:tag>
 
 # publish your image in docker hub
 docker push <dockerhub_username/image_name:tag>
-
-# create container with docker bind mounts
-docker run -it -d -v <dir_local_for_data:dir_container_for_data <image_name_or_id>
-docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
-
-# create container with docker volume
-docker run -d -v <volume_name>:/app <image_name_or_id>
 ```
 
 <p align="right">(<a href="#docker-images">back to docker images</a>)</p>
@@ -241,6 +281,13 @@ docker volume create <volume_name>
 
 # delete docker volume
 docker volume rm <volume_name>
+
+# create container with docker bind mounts
+docker run -it -d -v <dir_local_for_data:dir_container_for_data <image_name_or_id>
+docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
+
+# create container with docker volume
+docker run -d -v <volume_name>:/app <image_name_or_id>
 ```
 
 <p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>
