@@ -442,12 +442,24 @@ docker run -d -v <volume_name>:/app <image_name_or_id>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
     <h2 id="docker-volumes"><a class="anchor" aria-hidden="true" tabindex="-1" href="#docker-volumes"><span class="octicon octicon-link"></span></a>Docker Volumes</h2>
     <p><a name="docker-volumes"></a></p>
-    <pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line line-number" line="1"><span class="token comment"># create docker volume</span>
-</span><span class="code-line line-number" line="2"><span class="token function">docker</span> volume create <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
+    <pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line line-number" line="1"><span class="token comment"># list docker volumes</span>
+</span><span class="code-line line-number" line="2"><span class="token function">docker</span> volume <span class="token function">ls</span>
 </span><span class="code-line line-number" line="3">
-</span><span class="code-line line-number" line="4"><span class="token comment"># delete docker volume</span>
-</span><span class="code-line line-number" line="5"><span class="token function">docker</span> volume <span class="token function">rm</span> <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
-</span></code><div onclick="copied(this)" data-code="# create docker volume
+</span><span class="code-line line-number" line="4"><span class="token comment"># inspect docker volumes</span>
+</span><span class="code-line line-number" line="5"><span class="token function">docker</span> volume inspect <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
+</span><span class="code-line line-number" line="6">
+</span><span class="code-line line-number" line="7"><span class="token comment"># create docker volume</span>
+</span><span class="code-line line-number" line="8"><span class="token function">docker</span> volume create <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
+</span><span class="code-line line-number" line="9">
+</span><span class="code-line line-number" line="10"><span class="token comment"># delete docker volume</span>
+</span><span class="code-line line-number" line="11"><span class="token function">docker</span> volume <span class="token function">rm</span> <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
+</span></code><div onclick="copied(this)" data-code="# list docker volumes
+docker volume ls
+
+# inspect docker volumes
+docker volume inspect <volume_name>
+
+# create docker volume
 docker volume create <volume_name>
 
 # delete docker volume
@@ -459,18 +471,46 @@ docker volume rm <volume_name>
     <pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line line-number" line="1"><span class="token comment"># list networks</span>
 </span><span class="code-line line-number" line="2"><span class="token function">docker</span> network list
 </span><span class="code-line line-number" line="3">
-</span><span class="code-line line-number" line="4"><span class="token comment"># create docker network</span>
-</span><span class="code-line line-number" line="5"><span class="token function">docker</span> network create <span class="token parameter variable">--drive</span> bridge skynet
+</span><span class="code-line line-number" line="4"><span class="token comment"># inspect docker network</span>
+</span><span class="code-line line-number" line="5"><span class="token function">docker</span> network inspect <span class="token operator">&#x3C;</span>network_name<span class="token operator">></span>
+</span><span class="code-line line-number" line="6">
+</span><span class="code-line line-number" line="7"><span class="token comment"># create docker network bridge</span>
+</span><span class="code-line line-number" line="8"><span class="token function">docker</span> network create <span class="token parameter variable">--drive</span> bridge <span class="token operator">&#x3C;</span>network_name<span class="token operator">></span>
+</span><span class="code-line line-number" line="9">
+</span><span class="code-line line-number" line="10"><span class="token comment"># delete docker network</span>
+</span><span class="code-line line-number" line="11"><span class="token function">docker</span> network <span class="token function">rm</span> <span class="token operator">&#x3C;</span>network_name<span class="token operator">></span>
 </span></code><div onclick="copied(this)" data-code="# list networks
 docker network list
 
-# create docker network
-docker network create --drive bridge skynet
+# inspect docker network
+docker network inspect <network_name>
+
+# create docker network bridge
+docker network create --drive bridge <network_name>
+
+# delete docker network
+docker network rm <network_name>
 " class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-network">back to docker network</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
     <h2 id="docker-compose"><a class="anchor" aria-hidden="true" tabindex="-1" href="#docker-compose"><span class="octicon octicon-link"></span></a>Docker Compose</h2>
     <p><a name="docker-compose"></a></p>
-    <pre class="language-sh"><code class="language-sh code-highlight"></code><div onclick="copied(this)" data-code="" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
+    <pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line line-number" line="1"><span class="token comment"># list containers|services</span>
+</span><span class="code-line line-number" line="2"><span class="token function">docker-compose</span> <span class="token function">ps</span>
+</span><span class="code-line line-number" line="3"><span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> configs/docker/apps/app-silvestrini/docker-compose.yaml  <span class="token function">ps</span>
+</span><span class="code-line line-number" line="4">
+</span><span class="code-line line-number" line="5"><span class="token comment"># create containers|services</span>
+</span><span class="code-line line-number" line="6"><span class="token function">docker-compose</span> up
+</span><span class="code-line line-number" line="7"><span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
+</span><span class="code-line line-number" line="8"><span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> configs/docker/apps/app-silvestrini/docker-compose.yaml up
+</span></code><div onclick="copied(this)" data-code="# list containers|services
+docker-compose ps
+docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml  ps
+
+# create containers|services
+docker-compose up
+docker-compose up -d
+docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
     <h2 id="contributing"><a class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
     <p>
