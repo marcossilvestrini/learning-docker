@@ -1,16 +1,16 @@
 ------------------------------------------------------
 Check Docker App for This Lab
-Date: 2023-06-22 21:36:58
+Date: 2023-06-22 22:39:07
 ------------------------------------------------------
 
 ------------------------------------------------------
 Check Docker Build Image app-silvestrini...
-mrsilvestrini/app-silvestrini   v1.0.0    61b567fb5fe4   6 minutes ago    187MB
+mrsilvestrini/app-silvestrini   v1.0.0    9311d7b33ad3   41 minutes ago   187MB
 ------------------------------------------------------
 
 ------------------------------------------------------
 Check Status Docker Container app-silvestrini...
-4759a21520d3   mrsilvestrini/app-http:v1.0.0   "/docker-entrypoint.…"   6 minutes ago   Up 6 minutes   0.0.0.0:8080->80/tcp   app-silvestrini
+3d4884b0110e   mrsilvestrini/app-silvestrini:v1.0.0   "/docker-entrypoint.…"   41 minutes ago   Up 41 minutes   0.0.0.0:8080->80/tcp   app-silvestrini
 ------------------------------------------------------
 
 Check Docker App Status...
