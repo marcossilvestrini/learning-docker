@@ -13,7 +13,7 @@ WORKDIR="/home/vagrant"
 cd $WORKDIR || exit
 
 #Variables
-DOCKER_APP_NAME="app-http"
+DOCKER_APP_NAME="app-silvestrini"
 DOCKER_IMAGE="silvestrini/$DOCKER_APP_NAME"
 URL_DOCKER_APP="http://debian-client01:8080"
 

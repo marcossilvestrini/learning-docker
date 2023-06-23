@@ -16,14 +16,19 @@ cd $WORKDIR || exit
 
 # Variables
 DISTRO=$(cat /etc/*release | grep -ws NAME=)
-DOCKER_APP_NAME="app-http"
+DOCKER_APP_NAME="app-silvestrini"
 DOCKER_APP_DIR="/usr/share/nginx/html"
-DOCKER_VOLUME="/docker-volumes/$DOCKER_APP_NAME"
+DOCKER_VOLUME="${DOCKER_APP_NAME}_volume-${DOCKER_APP_NAME}"
+DOCKER_VOLUME_FOLDER="/var/lib/docker/volumes/$DOCKER_VOLUME/_data"
+PERSISTENT_FILE="$DOCKER_VOLUME_FOLDER/persistent-file.txt"
 TAG="v1.0.0"
-# {{username}}/{{imagename}}:{{version\tag}}
-DOCKER_IMAGE="mrsilvestrini/$DOCKER_APP_NAME:$TAG" 
-DOCKERFILE="configs/docker/images/$DOCKER_APP_NAME"
+DOCKER_IMAGE="mrsilvestrini/$DOCKER_APP_NAME:$TAG" # {{username}}/{{imagename}}:{{version|tag}}
+DOCKERFILE="configs/docker/apps/$DOCKER_APP_NAME"
 
+# Get docker credentials
+JSON="$WORKDIR/security/.docker-secrets"
+DOCKERHUB_USERNAME=$(jq -r .username $JSON)
+DOCKERHUB_PASSWORD=$(jq -r .password $JSON)   
 
 # Check if distribution is Debian
 if [[ "$DISTRO" == *"Debian"* ]]; then    
@@ -48,11 +53,6 @@ docker build -q -t "$DOCKER_IMAGE" --build-arg DOCKER_APP_DIR="$DOCKER_APP_DIR" 
 
 # Push image to docker hub
 
-## Get docker credentials
-JSON="$WORKDIR/security/.docker-secrets"
-DOCKERHUB_USERNAME=$(jq -r .username $JSON)
-DOCKERHUB_PASSWORD=$(jq -r .password $JSON)    
-
 ## Login dockerhub account
 echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io > /dev/null 2>&1
 
@@ -64,15 +64,12 @@ docker pull $DOCKER_IMAGE
 
 # Create a container with custom image for testing purposes
 
-## Create container with docker volume
-DOCKER_VOLUME="$DOCKER_APP_NAME"
-DOCKER_VOLUME_FOLDER="/var/lib/docker/volumes/$DOCKER_VOLUME/_data/"
-PERSISTENT_FILE="$DOCKER_VOLUME_FOLDER/persistent-file.txt"
-docker run -d --name $DOCKER_APP_NAME \
-    --mount source=$DOCKER_VOLUME,target=$DOCKER_APP_DIR \
-    -p 8080:80 $DOCKER_IMAGE
+# docker run -d --name $DOCKER_APP_NAME \
+#     --mount source=$DOCKER_VOLUME,target=$DOCKER_APP_DIR \
+#     -p 8080:80 $DOCKER_IMAGE
+docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up -d
 
-## Create persistent file for test volume
+# Create persistent file for test volume
 if [ ! -f "$PERSISTENT_FILE" ]; then
     date=$(date '+%Y-%m-%d %H:%M:%S')
     echo "Date: $date" > "$PERSISTENT_FILE"

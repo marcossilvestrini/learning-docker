@@ -53,3 +53,7 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 
 ## Check installation
 docker --version
+
+## install docker compose
+apt install -y docker-compose
+apt autoremove -y

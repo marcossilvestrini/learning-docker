@@ -134,11 +134,20 @@ docker container ls -s
 # run container
 docker run hello-world
 
+# run container iterative
+docker run -it <image_name> bash
+
 # execute command in container
 docker exec -it <container_id_or_name> <command>
 
-# run container iterative
-docker run -it <image_name> bash
+# create container with name
+docker run -it --name ubuntu01 ubuntu bash
+
+# create container with specified network
+docker run -it --name ubuntu01 --network skynet ubuntu bash
+
+# create container with network host
+docker run -it --name ubuntu01 --network host ubuntu bash
 
 # stop pause containers
 docker stop <container_id_or_name>
@@ -163,6 +172,9 @@ docker run -d -p 8080:80 <container_id_or_name>
 
 # show map ports
 docker port <container_id_or_name>
+
+# inspect container
+docker inspect <container_id_or_name>
 ```
 
 <p align="right">(<a href="#docker-containers">back to docker containers</a>)</p>
@@ -226,6 +238,32 @@ docker volume rm <volume_name>
 ```
 
 <p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Docker Network
+
+<a name="docker-network"></a>
+
+```sh
+# list networks
+docker network list
+
+# create docker network
+docker network create --drive bridge skynet
+```
+
+<p align="right">(<a href="#docker-network">back to docker network</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Docker Compose
+
+<a name="docker-compose"></a>
+
+```sh
+
+```
+
+<p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing

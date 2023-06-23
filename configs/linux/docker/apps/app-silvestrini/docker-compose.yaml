@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  app-silvestrini:
+    image: mrsilvestrini/app-http:v1.0.0
+    container_name: app-silvestrini
+    volumes:      
+        - volume-app-silvestrini:/usr/share/nginx/html
+    networks:
+      - skynet
+    ports:
+      - 8080:80
+
+volumes:
+  volume-app-silvestrini:
+
+networks:
+  skynet:
+    driver: bridge
