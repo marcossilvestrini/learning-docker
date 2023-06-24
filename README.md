@@ -45,7 +45,10 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#docker-containers">Docker Containers</a></li>
     <li><a href="#docker-images">Docker Images</a></li>
+    <li><a href="#docker-build">Docker Build</a></li>
     <li><a href="#docker-volumes">Docker Volumes</a></li>
+    <li><a href="#docker-network">Docker Network</a></li>
+    <li><a href="#docker-compose">Docker Compose</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -241,6 +244,8 @@ docker rmi $(docker images -aq) --force
 
 ## Docker Build
 
+<a name="docker-build"></a>
+
 Build a docker image
 
 ```sh
@@ -262,7 +267,7 @@ docker build -t <dockerhub_username/image_name:tag>
 docker push <dockerhub_username/image_name:tag>
 ```
 
-<p align="right">(<a href="#docker-images">back to docker images</a>)</p>
+<p align="right">(<a href="#docker-build">back to docker images</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Docker Volumes
