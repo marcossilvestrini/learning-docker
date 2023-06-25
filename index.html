@@ -518,11 +518,12 @@ docker push <dockerhub_username/image_name:tag>
 </span><span class="code-line line-number" line="11"><span class="token function">docker</span> volume <span class="token function">rm</span> <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>
 </span><span class="code-line line-number" line="12">
 </span><span class="code-line line-number" line="13"><span class="token comment"># create container with docker bind mounts</span>
-</span><span class="code-line line-number" line="14"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> <span class="token operator">&#x3C;</span>dir_local_for_data:dir_container_for_data <span class="token operator">&#x3C;</span>image_name_or_id<span class="token operator">></span>
+</span><span class="code-line line-number" line="14"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> <span class="token operator">&#x3C;</span>path_local_for_data<span class="token operator">></span>:<span class="token operator">&#x3C;</span>path_container_for_data<span class="token operator">></span> <span class="token operator">&#x3C;</span>image_name_or_id<span class="token operator">></span>
 </span><span class="code-line line-number" line="15"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--mount</span> <span class="token assign-left variable">type</span><span class="token operator">=</span>bind,source<span class="token operator">=</span>/myfolder-volume,target<span class="token operator">=</span>/app <span class="token operator">&#x3C;</span>image_name_or_id<span class="token operator">></span>
-</span><span class="code-line line-number" line="16">
-</span><span class="code-line line-number" line="17"><span class="token comment"># create container with docker volume</span>
-</span><span class="code-line line-number" line="18"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>:/app <span class="token operator">&#x3C;</span>image_name_or_id<span class="token operator">></span>
+</span><span class="code-line line-number" line="16"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> <span class="token operator">&#x3C;</span>volume_name<span class="token operator">></span>:/app <span class="token operator">&#x3C;</span>image_name_or_id<span class="token operator">></span>
+</span><span class="code-line line-number" line="17">
+</span><span class="code-line line-number" line="18"><span class="token comment"># mount file</span>
+</span><span class="code-line line-number" line="19"><span class="token function">docker</span> container run <span class="token parameter variable">-ti</span> <span class="token parameter variable">--mount</span> <span class="token assign-left variable">type</span><span class="token operator">=</span>bind,src<span class="token operator">=</span><span class="token operator">&#x3C;</span>path_local_for_data/file<span class="token operator">></span>,dst<span class="token operator">=</span><span class="token operator">&#x3C;</span>path_container_for_data/file<span class="token operator">></span> ubuntu
 </span></code><div onclick="copied(this)" data-code="# list docker volumes
 docker volume ls
 
@@ -536,11 +537,12 @@ docker volume create <volume_name>
 docker volume rm <volume_name>
 
 # create container with docker bind mounts
-docker run -it -d -v <dir_local_for_data:dir_container_for_data <image_name_or_id>
+docker run -it -d -v <path_local_for_data>:<path_container_for_data> <image_name_or_id>
 docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
-
-# create container with docker volume
 docker run -d -v <volume_name>:/app <image_name_or_id>
+
+# mount file
+docker container run -ti --mount type=bind,src=<path_local_for_data/file>,dst=<path_container_for_data/file> ubuntu
 " class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
     <h2 id="docker-network"><a class="anchor" aria-hidden="true" tabindex="-1" href="#docker-network"><span class="octicon octicon-link"></span></a>Docker Network</h2>
