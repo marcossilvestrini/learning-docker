@@ -288,11 +288,12 @@ docker volume create <volume_name>
 docker volume rm <volume_name>
 
 # create container with docker bind mounts
-docker run -it -d -v <dir_local_for_data:dir_container_for_data <image_name_or_id>
+docker run -it -d -v <path_local_for_data>:<path_container_for_data> <image_name_or_id>
 docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
-
-# create container with docker volume
 docker run -d -v <volume_name>:/app <image_name_or_id>
+
+# mount file
+docker container run -ti --mount type=bind,src=<path_local_for_data/file>,dst=<path_container_for_data/file> ubuntu
 ```
 
 <p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>

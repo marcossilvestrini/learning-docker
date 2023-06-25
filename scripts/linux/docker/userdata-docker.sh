@@ -31,6 +31,7 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
 
 # Install Docker Engine
 curl -fsSL https://get.docker.com/ | sh
+systemctl restart docker
 
 ## Check installation
 docker --version
