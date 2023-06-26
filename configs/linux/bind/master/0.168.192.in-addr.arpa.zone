@@ -18,3 +18,4 @@ $TTL 1h
 141                 PTR     debian-server02.skynet.com.br.
 142                 PTR     debian-server03.skynet.com.br.
 150                 PTR     debian-client01.skynet.com.br.
+150                 PTR     harbor.skynet.com.br.

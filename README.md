@@ -240,6 +240,11 @@ docker rmi <image_id> --force
 
 # remove all docker images
 docker rmi $(docker images -aq) --force
+
+# commit changes in container
+## install and customize your container after...then:
+docker commit -m "my container" CONTAINERID
+docker tag IMAGEID marcossilvestrini/apache_2:1.0
 ```
 
 ## Docker Build
@@ -281,19 +286,51 @@ docker volume ls
 # inspect docker volumes
 docker volume inspect <volume_name>
 
+# find docker volumes
+docker volume inspect --format '{{ .Mountpoint }}' <volume_name>
+
+
 # create docker volume
 docker volume create <volume_name>
 
 # delete docker volume
 docker volume rm <volume_name>
 
+# delete all docker volume if not in user]
+docker volume prune
+
 # create container with docker bind mounts
-docker run -it -d -v <path_local_for_data>:<path_container_for_data> <image_name_or_id>
 docker run -d --mount type=bind,source=/myfolder-volume,target=/app <image_name_or_id>
+
+# mount volumes
+docker run -it -d -v <path_local_for_data>:<path_container_for_data> <image_name_or_id>
 docker run -d -v <volume_name>:/app <image_name_or_id>
 
 # mount file
 docker container run -ti --mount type=bind,src=<path_local_for_data/file>,dst=<path_container_for_data/file> ubuntu
+
+# share container volumes
+
+##  create container volume
+docker container create -v /data --name dbdata centos
+
+## create containers
+docker run -d -p 5432:5432 --name pgsql1 --volumes-from dbdata \
+    -e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker \
+    -e POSTGRESQL_DB=docker kamui/postgresql
+
+docker run -d -p 5433:5432 --name pgsql2 --volumes-from dbdata \
+   -e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker \
+   -e POSTGRESQL_DB=docker kamui/postgresql
+
+## find volume
+docker inspect dbdata | grep -i Source
+
+## list containers data of shared volume
+sudo ls /var/lib/docker/volumes/<volume_id>/_data
+
+# create backups of shared volume
+docker run -ti --volumes-from dbdata -v $(pwd):/backup debian tar -cvf /backup/backup.tar /data
 ```
 
 <p align="right">(<a href="#docker-volumes">back to docker volumes</a>)</p>
@@ -370,6 +407,8 @@ Project Link: [https://github.com/marcossilvestrini/learning-docker](https://git
 
 * [Docker Website](https://www.docker.com/)
 * [Docker Overview](https://docs.docker.com/get-started/overview/)
+* [Convert Command in Dockerfile](https://www.composerize.com/)
+* [Deploy Docker Register](https://docs.docker.com/registry/deploying/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

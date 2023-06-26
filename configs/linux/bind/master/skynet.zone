@@ -17,8 +17,9 @@ debian-server01             A       192.168.0.140   ;server
 debian-server02             A       192.168.0.141   ;server
 debian-server03             A       192.168.0.142   ;server
 debian-client01             A       192.168.0.150   ;client server
+harbor                      A       192.168.0.150   ;docker register
 win-silvestrini             A       192.168.0.100   ;my desktop
-win-silvestrini2             A      192.168.0.101   ;my notebook
+win-silvestrini2            A      192.168.0.101   ;my notebook
 mail                        A       192.168.0.130   ;mail
 ftp                         CNAME   ol9-server01    ;ftp
 www                         CNAME   ol9-server02    ;http
