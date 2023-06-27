@@ -14,11 +14,11 @@
 #>
 
 # Execute script as Administrator
-if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {  
-   $arguments = "& '" + $myinvocation.mycommand.definition + "'"
-   Start-Process -Wait powershell -Verb runAs -WindowStyle Minimized -ArgumentList $arguments
-   Break
-}
+# if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {  
+#    $arguments = "& '" + $myinvocation.mycommand.definition + "'"
+#    Start-Process -Wait powershell -Verb runAs -WindowStyle Minimized -ArgumentList $arguments
+#    Break
+# }
 
 # Clear screen
 Clear-Host
@@ -68,6 +68,9 @@ Start-Process -Wait -NoNewWindow -FilePath "$virtualboxFolder\VBoxManage.exe" `
 
 # Vagrant home directory for downloadad boxes.
 setx VAGRANT_HOME "$vagrantHome" >$null
+
+# Copy app files
+Copy-Item -Force "$baseProject\index.html" -Destination "$baseProject\configs\linux\docker\apps\app-silvestrini"
 
 # Up docker stack
 $docker = "$baseVagrantfile"

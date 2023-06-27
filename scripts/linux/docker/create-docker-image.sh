@@ -16,11 +16,9 @@ cd $WORKDIR || exit
 
 # Variables
 DISTRO=$(cat /etc/*release | grep -ws NAME=)
+IP_MANAGER="192.168.0.140"
 DOCKER_APP_NAME="app-silvestrini"
 DOCKER_APP_DIR="/usr/share/nginx/html"
-DOCKER_VOLUME="${DOCKER_APP_NAME}_volume-${DOCKER_APP_NAME}"
-DOCKER_VOLUME_FOLDER="/var/lib/docker/volumes/$DOCKER_VOLUME/_data"
-PERSISTENT_FILE="$DOCKER_VOLUME_FOLDER/persistent-file.txt"
 TAG="v1.0.0"
 DOCKER_IMAGE="mrsilvestrini/$DOCKER_APP_NAME:$TAG" # {{username}}/{{imagename}}:{{version|tag}}
 DOCKERFILE="configs/docker/apps/$DOCKER_APP_NAME"
@@ -64,17 +62,20 @@ docker pull $DOCKER_IMAGE
 
 # Create a container with custom image for testing purposes
 
+## Version 1
 # docker run -d --name $DOCKER_APP_NAME \
 #     --mount source=$DOCKER_VOLUME,target=$DOCKER_APP_DIR \
 #     -p 8080:80 $DOCKER_IMAGE
-docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up -d
 
-# Create persistent file for test volume
-if [ ! -f "$PERSISTENT_FILE" ]; then
-    date=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "Date: $date" > "$PERSISTENT_FILE"
-    echo "Test persistet file in docker volume!!!" >> $PERSISTENT_FILE    
-fi
+## Version 2
+# docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up -d
+
+## Version 3
+#docker stack deploy -c configs/docker/apps/app-silvestrini/docker-compose.yaml stack
+
+## Version 4 -
+sshpass -p 'vagrant' ssh -o StrictHostKeyChecking=no vagrant@$IP_MANAGER -l vagrant \
+    docker stack deploy -c configs/docker/apps/app-silvestrini/docker-compose.yaml stack
 
 # Logout dockerhub according
 docker logout

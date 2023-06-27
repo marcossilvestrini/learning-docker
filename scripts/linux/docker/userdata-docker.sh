@@ -18,9 +18,9 @@ cd $WORKDIR || exit
 DISTRO=$(cat /etc/*release | grep -ws NAME=)
 
 # Check if distribution is Debian
-if [[ "$DISTRO" == *"Debian"* ]]; then    
+if [[ "$DISTRO" == *"Debian"* ]]; then
     echo "Distribution is Debian...Congratulations!!!"
-else    
+else
     echo "This script is available only Debian distributions!!!";exit 1;
 fi
 
@@ -33,18 +33,14 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
 #curl -fsSL https://get.docker.com/ | sh
 
 ## Update the apt package index and install packages to allow apt to use a repository over HTTPS:
-apt-get install -y ca-certificates curl gnupg
+apt-get install -y ca-certificates curl gnupg lsb-release
 
 ## Add Docker’s official GPG key:
-install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg -f --dearmor -o /etc/apt/keyrings/docker.gpg
-chmod a+r /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 ## Use the following command to set up the repository:
-echo \
-"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ## Update the apt package index:
 apt-get update -y

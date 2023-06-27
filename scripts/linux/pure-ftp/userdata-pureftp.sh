@@ -32,11 +32,9 @@ chmod 644 /etc/pure-ftpd/pure-ftpd.conf
 
 # Set NoAnonymous login
 cp configs/pure-ftpd/NoAnonymous /etc/pure-ftpd/conf
-dos2unix /etc/pure-ftpd/conf/NoAnonymous
 
 # Set chroo directory
 cp configs/pure-ftpd/ChrootEveryone /etc/pure-ftpd/conf
-dos2unix /etc/pure-ftpd/conf/ChrootEveryone
 
 # Restart service
 systemctl restart pure-ftpd

@@ -1,21 +1,20 @@
 ------------------------------------------------------
 Check Docker App for This Lab
-Date: 2023-06-26 19:57:55
+Date: 2023-06-27 14:15:43
 ------------------------------------------------------
 
 ------------------------------------------------------
 Check Docker Build Image app-silvestrini...
-mrsilvestrini/app-silvestrini   v1.0.0    1f563704a823   11 hours ago   187MB
+mrsilvestrini/app-silvestrini   v1.0.0    8a024fc5c55b   15 seconds ago   187MB
 ------------------------------------------------------
 
 ------------------------------------------------------
-Check Status Docker Container app-silvestrini...
-0fc7e7e17f7d   mrsilvestrini/app-silvestrini:v1.0.0   "/docker-entrypoint.…"   1 second ago   Up Less than a second   0.0.0.0:8080->80/tcp, :::8080->80/tcp   app-silvestrini
+Check Status Docker Service App app-silvestrini...
 ------------------------------------------------------
 
-Check Docker App Status...
+Check Docker Service App Status...
 
-Site: http://debian-client01:8080...
+Site: http://debian-server01:8080...
 
 200
 ------------------------------------------------------

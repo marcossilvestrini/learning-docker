@@ -15,7 +15,7 @@ cd $WORKDIR || exit
 #Variables
 DOCKER_APP_NAME="app-silvestrini"
 DOCKER_IMAGE="silvestrini/$DOCKER_APP_NAME"
-URL_DOCKER_APP="http://debian-client01:8080"
+URL_DOCKER_APP="http://debian-server01:8080"
 
 # File for outputs testing
 FILE_TEST=test/docker/check-docker-app.txt
@@ -35,12 +35,12 @@ echo -e "$LINE\n" >>$FILE_TEST
 
 # Check Docker Container
 echo $LINE >>$FILE_TEST
-echo "Check Status Docker Container $DOCKER_APP_NAME..." >>$FILE_TEST
+echo "Check Status Docker Service App $DOCKER_APP_NAME..." >>$FILE_TEST
 docker ps | grep $DOCKER_APP_NAME >>$FILE_TEST
 echo -e "$LINE\n" >>$FILE_TEST
 
 # Check Docker App Status
-echo -e "Check Docker App Status...\n" >>$FILE_TEST
+echo -e "Check Docker Service App Status...\n" >>$FILE_TEST
 echo -e "Site: $URL_DOCKER_APP...\n" >>$FILE_TEST
 curl -LI $URL_DOCKER_APP -o /dev/null -w '%{http_code}\n' -s >>$FILE_TEST
 echo -e "$LINE\n" >>$FILE_TEST

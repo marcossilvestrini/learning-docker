@@ -375,6 +375,27 @@ docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
 <p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Docker Stack
+
+<a name="docker-stack"></a>
+
+```sh
+# create service
+docker stack deploy -c docker-compose.yml first
+
+# list stacks
+docker stack ls
+
+# view services
+docker stack services first
+
+# view detailed services
+docker stack ps first
+```
+
+<p align="right">(<a href="#docker-stack">back to docker stack</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Docker Swarm
 
 <a name="docker-swarm"></a>
@@ -415,11 +436,38 @@ docker service inspect webserver
 
 # scale service
  docker service scale webserver=10
+```
+
+<p align="right">(<a href="#docker-swarm">back to docker secrets</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Docker Secrets
+
+<a name="docker-secrets"></a>
+
+```sh
+# create secret
+echo 'mypassword' | docker secret create my_password -
+docker secret create my_secret2 my_secret.txt
+
+# list secrets
+docker secret ls
+
+# inspect secrets
+docker secret inspect my_secret2
+
+# delete secrets
+docker secret rm my_secret2
+
+# create service with secrets
+docker service create --name web --detach=false --secret my_password  nginx
 
 ```
 
-<p align="right">(<a href="#docker-swarm">back to docker composed</a>)</p>
+<p align="right">(<a href="#docker-secrets">back to docker secrets</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 ## Contributing
 

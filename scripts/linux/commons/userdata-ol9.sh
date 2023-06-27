@@ -58,19 +58,19 @@ dos2unix /etc/sysctl.conf
 systemctl daemon-reload
 
 # SSH,FIREWALLD AND SELINUX
-#rm /etc/ssh/sshd_config.d/90-vagrant.conf
-#cp -f configs/commons/01-sshd-custom.conf /etc/ssh/sshd_config.d
-#dos2unix /etc/ssh/sshd_config.d
-#systemctl restart sshd
+rm /etc/ssh/sshd_config.d/90-vagrant.conf
+cp -f configs/commons/01-sshd-custom.conf /etc/ssh/sshd_config.d
+dos2unix /etc/ssh/sshd_config.d
+systemctl restart sshd
 cat security/id_ecdsa.pub >>.ssh/authorized_keys
-#echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
-#systemctl restart sshd
+echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
+systemctl restart sshd
 systemctl stop firewalld
 systemctl disable firewalld
 setenforce Permissive
 
 # Set GnuGP
-#echo vagrant | $(su -c "gpg -k" -s /bin/bash vagrant)
+echo vagrant | $(su -c "gpg -k" -s /bin/bash vagrant)
 
 # Install X11 Server
 dnf config-manager --set-enabled ol9_codeready_builder
