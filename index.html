@@ -665,6 +665,82 @@ docker-compose up -d
 docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
 " class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+    <h2 id="docker-swarm"><a class="anchor" aria-hidden="true" tabindex="-1" href="#docker-swarm"><span class="octicon octicon-link"></span></a>Docker Swarm</h2>
+    <p><a name="docker-swarm"></a></p>
+    <pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line line-number" line="1"><span class="token comment"># init docker swarm with manager</span>
+</span><span class="code-line line-number" line="2"><span class="token function">docker</span> swarm init --advertise-addr <span class="token number">192.168</span>.0140:2377
+</span><span class="code-line line-number" line="3">
+</span><span class="code-line line-number" line="4"><span class="token comment"># get swarm token</span>
+</span><span class="code-line line-number" line="5"><span class="token assign-left variable">MANAGER_TOKEN</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">docker</span> swarm join-token manager <span class="token parameter variable">-q</span><span class="token variable">)</span></span>
+</span><span class="code-line line-number" line="6"><span class="token assign-left variable">WORKER_TOKEN</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">docker</span> swarm join-token worker <span class="token parameter variable">-q</span><span class="token variable">)</span></span>
+</span><span class="code-line line-number" line="7">
+</span><span class="code-line line-number" line="8"><span class="token comment"># join server in docker swarm</span>
+</span><span class="code-line line-number" line="9"><span class="token function">docker</span> swarm <span class="token function">join</span> <span class="token parameter variable">--token</span> <span class="token variable">$MANAGER_TOKEN</span> <span class="token number">192.168</span>.0.140:2377
+</span><span class="code-line line-number" line="10">
+</span><span class="code-line line-number" line="11"><span class="token comment"># promote node worker to manager</span>
+</span><span class="code-line line-number" line="12"><span class="token function">docker</span> <span class="token function">node</span> promote debian-server02
+</span><span class="code-line line-number" line="13">
+</span><span class="code-line line-number" line="14"><span class="token comment"># list swarm nodes</span>
+</span><span class="code-line line-number" line="15"><span class="token function">docker</span> nodes <span class="token function">ls</span>
+</span><span class="code-line line-number" line="16">
+</span><span class="code-line line-number" line="17"><span class="token comment"># leave node</span>
+</span><span class="code-line line-number" line="18"><span class="token function">docker</span> swarm leave <span class="token parameter variable">--force</span>
+</span><span class="code-line line-number" line="19">
+</span><span class="code-line line-number" line="20"><span class="token comment"># delete node</span>
+</span><span class="code-line line-number" line="21"><span class="token function">docker</span> <span class="token function">node</span> <span class="token function">rm</span> debian-server01
+</span><span class="code-line line-number" line="22">
+</span><span class="code-line line-number" line="23"><span class="token comment"># list services</span>
+</span><span class="code-line line-number" line="24"><span class="token function">docker</span> <span class="token function">service</span> <span class="token function">ps</span>
+</span><span class="code-line line-number" line="25"><span class="token function">docker</span> <span class="token function">service</span> <span class="token function">ps</span> webserver
+</span><span class="code-line line-number" line="26">
+</span><span class="code-line line-number" line="27"><span class="token comment"># create service</span>
+</span><span class="code-line line-number" line="28"><span class="token function">docker</span> <span class="token function">service</span> create <span class="token parameter variable">--name</span> webserver <span class="token parameter variable">--replicas</span> <span class="token number">5</span> <span class="token parameter variable">-p</span> <span class="token number">8080</span>:80 nginx
+</span><span class="code-line line-number" line="29"><span class="token function">docker</span> <span class="token function">service</span> create <span class="token parameter variable">--name</span> webserver <span class="token parameter variable">--replicas</span> <span class="token number">5</span> <span class="token parameter variable">-p</span> <span class="token number">8080</span>:80 <span class="token parameter variable">--mount</span> <span class="token assign-left variable">type</span><span class="token operator">=</span>volume,src<span class="token operator">=</span>teste,dst<span class="token operator">=</span>/app nginx
+</span><span class="code-line line-number" line="30">
+</span><span class="code-line line-number" line="31"><span class="token comment"># inspect service</span>
+</span><span class="code-line line-number" line="32"><span class="token function">docker</span> <span class="token function">service</span> inspect webserver
+</span><span class="code-line line-number" line="33">
+</span><span class="code-line line-number" line="34"><span class="token comment"># scale service</span>
+</span><span class="code-line line-number" line="35"> <span class="token function">docker</span> <span class="token function">service</span> scale <span class="token assign-left variable">webserver</span><span class="token operator">=</span><span class="token number">10</span>
+</span><span class="code-line line-number" line="36">
+</span></code><div onclick="copied(this)" data-code="# init docker swarm with manager
+docker swarm init --advertise-addr 192.168.0140:2377
+
+# get swarm token
+MANAGER_TOKEN=$(docker swarm join-token manager -q)
+WORKER_TOKEN=$(docker swarm join-token worker -q)
+
+# join server in docker swarm
+docker swarm join --token $MANAGER_TOKEN 192.168.0.140:2377
+
+# promote node worker to manager
+docker node promote debian-server02
+
+# list swarm nodes
+docker nodes ls
+
+# leave node
+docker swarm leave --force
+
+# delete node
+docker node rm debian-server01
+
+# list services
+docker service ps
+docker service ps webserver
+
+# create service
+docker service create --name webserver --replicas 5 -p 8080:80 nginx
+docker service create --name webserver --replicas 5 -p 8080:80 --mount type=volume,src=teste,dst=/app nginx
+
+# inspect service
+docker service inspect webserver
+
+# scale service
+ docker service scale webserver=10
+
+" class="copied"><svg class="octicon-copy" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path></svg><svg class="octicon-check" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" height="12" width="12"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg></div></pre><p align="right">(<a href="#docker-swarm">back to docker composed</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
     <h2 id="contributing"><a class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
     <p>
       Contributions are what make the open source community such an amazing place to
