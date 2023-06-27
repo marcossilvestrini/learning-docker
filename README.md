@@ -375,6 +375,52 @@ docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
 <p align="right">(<a href="#docker-compose">back to docker composed</a>)</p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Docker Swarm
+
+<a name="docker-swarm"></a>
+
+```sh
+# init docker swarm with manager
+docker swarm init --advertise-addr 192.168.0140:2377
+
+# get swarm token
+MANAGER_TOKEN=$(docker swarm join-token manager -q)
+WORKER_TOKEN=$(docker swarm join-token worker -q)
+
+# join server in docker swarm
+docker swarm join --token $MANAGER_TOKEN 192.168.0.140:2377
+
+# promote node worker to manager
+docker node promote debian-server02
+
+# list swarm nodes
+docker nodes ls
+
+# leave node
+docker swarm leave --force
+
+# delete node
+docker node rm debian-server01
+
+# list services
+docker service ps
+docker service ps webserver
+
+# create service
+docker service create --name webserver --replicas 5 -p 8080:80 nginx
+docker service create --name webserver --replicas 5 -p 8080:80 --mount type=volume,src=teste,dst=/app nginx
+
+# inspect service
+docker service inspect webserver
+
+# scale service
+ docker service scale webserver=10
+
+```
+
+<p align="right">(<a href="#docker-swarm">back to docker composed</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to
