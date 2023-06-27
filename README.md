@@ -380,17 +380,20 @@ docker-compose -f configs/docker/apps/app-silvestrini/docker-compose.yaml up
 <a name="docker-stack"></a>
 
 ```sh
-# create service
+# create stack|services
 docker stack deploy -c docker-compose.yml first
 
-# list stacks
+# list stacks|services
 docker stack ls
 
-# view services
+# view stack services
 docker stack services first
 
-# view detailed services
+# view detailed stack|services | all containers
 docker stack ps first
+
+# remove stack|services
+docker stack rm <stack_service_name>
 ```
 
 <p align="right">(<a href="#docker-stack">back to docker stack</a>)</p>
@@ -416,6 +419,9 @@ docker node promote debian-server02
 
 # list swarm nodes
 docker nodes ls
+
+# inspect nodes
+docker node inspect <node_name>
 
 # leave node
 docker swarm leave --force
@@ -503,6 +509,7 @@ Project Link: [https://github.com/marcossilvestrini/learning-docker](https://git
 * [Docker Overview](https://docs.docker.com/get-started/overview/)
 * [Convert Command in Dockerfile](https://www.composerize.com/)
 * [Deploy Docker Register](https://docs.docker.com/registry/deploying/)
+* [Record Terminal](https://asciinema.org/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
