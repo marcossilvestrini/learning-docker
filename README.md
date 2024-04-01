@@ -11,7 +11,7 @@
 [![Issues][issues-shield]][issues-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-# LEARNING Docker
+# LEARNING DOCKER
 
 ![Docker](images/docker.jpg)
 
@@ -67,19 +67,20 @@
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 <a name="prerequisites"></a>
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software
+List things you need to use the software
 and how to install them.
 
-* git
-* Virtual Box and extension
-* Vagrant
+```sh
+git
+Virtual Box and extension
+Vagrant
+```
 
 <a name="installation"></a>
 
@@ -288,7 +289,6 @@ docker volume inspect <volume_name>
 
 # find docker volumes
 docker volume inspect --format '{{ .Mountpoint }}' <volume_name>
-
 
 # create docker volume
 docker volume create <volume_name>
